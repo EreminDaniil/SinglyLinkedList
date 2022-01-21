@@ -159,12 +159,11 @@ public:
 
 		while (!l.IsEmpty())
 		{
-			Next = Head;
 			Next = Current->Next;
 			Current = Next;
 			if (Current != nullptr)
 			{
-				out << (*Current).Value << std::endl;
+				out << Current->Value << std::endl;
 			}
 			
 		}
