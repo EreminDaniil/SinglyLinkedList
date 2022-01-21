@@ -2,10 +2,9 @@
 #include <string>
 #include "SinglyLinkedList.h"
 
-
 typedef std::string Elem;
 
-struct Node 
+struct Node
 { 
 	Node *Next; 
 	Elem Value; 
@@ -14,17 +13,17 @@ struct Node
 class SinglyLinkedList
 {
 public:
-	SinglyLinkedList::SinglyLinkedList()
+	SinglyLinkedList() 
 	{
 		Head = nullptr;
 	}
 
-	SinglyLinkedList::~SinglyLinkedList()
+	~SinglyLinkedList()
 	{
 		Node* Current = Head;
 		Node* Next;
 
-		while (!IsEmpty())
+		while (!IsEmpty()-1)
 		{
 			Next = Current->Next;
 			delete Current;
@@ -32,12 +31,12 @@ public:
 		}
 	}
 
-	bool SinglyLinkedList::IsEmpty() const
+	bool IsEmpty() const
 	{
 		return (Head == nullptr);
 	}
 
-	size_t SinglyLinkedList::Count() const
+	size_t Count() const
 	{
 		Node* Temp = Head;
 		int NumberNode = 0;
@@ -49,7 +48,7 @@ public:
 		return NumberNode;
 	}
 
-	SinglyLinkedList::SinglyLinkedList(const SinglyLinkedList &other)
+	SinglyLinkedList (const SinglyLinkedList &other)
 	{
 		Head = nullptr;
 		Node* OtherCurrent = other.Head;
@@ -60,7 +59,7 @@ public:
 		} 
 	}
 
-	SinglyLinkedList::SinglyLinkedList &operator=(const SinglyLinkedList &other)
+	SinglyLinkedList &operator=(const SinglyLinkedList &other)
 	{
 		if (&other != this) 
 		{
@@ -80,7 +79,7 @@ public:
 		return *this;
 	}
 
-	const SinglyLinkedList::Elem &Front() const
+	const Elem &Front() const
 	{
 		Node* Current = Head;
 		while (Current->Next != nullptr)
@@ -90,7 +89,7 @@ public:
 		return Current->Value;
 	}
 
-	void SinglyLinkedList::InsertFront(const Elem &e)
+	void InsertFront(const Elem &e)
 	{
 		Node* Current = Head;
 		while (Current->Next != nullptr)
@@ -103,7 +102,7 @@ public:
 		Current->Next = NewNode;
 	}
 
-	void SinglyLinkedList::EraseFront()
+	void EraseFront()
 	{
 		if (Head == nullptr)
 		{
@@ -124,7 +123,7 @@ public:
 		Current->Next = nullptr;
 	}
 
-	void SinglyLinkedList::Insert(Elem AddValue)
+	void Insert(Elem AddValue)
 	{
 		Node* NewNode = new Node;
 		NewNode->Value = AddValue;
@@ -141,7 +140,7 @@ public:
 		}
 	}
 
-	void SinglyLinkedList::Display()
+	void Display()
 	{
 		Node* Temp = Head;
 		while (Temp != nullptr)
@@ -155,54 +154,27 @@ public:
  	friend std::ostream& operator<<(std::ostream& out, SinglyLinkedList &l)
  	{
 		Node* Current = l.Head;
-		Node* Next;
-
-		while (!l.IsEmpty())
+		while (Current != nullptr)
 		{
-			Next = Current->Next;
-			Current = Next;
-			if (Current != nullptr)
-			{
-				out << Current->Value << std::endl;
-			}
-			
+			out << Current->Value << std::endl;
+			Current = Current->Next;
 		}
 		return out;
 	}
 
 private:
 	Node* Head;
+	Node* Next;
 };
 
 int main() {
 
 	SinglyLinkedList List;
 
-	List.EraseFront();
-
-
 	List.Insert("Monday");
   	List.Insert("Thuesday");
+	List.Insert("Saturday");
+	List.Insert("Friday");
+	List.Insert("Sunday");
 	std::cout << List << std::endl;
-//  	List.Insert(1);
-//  	List.Insert(3);
-//  	List.Insert(7);
-// 	List
-// 	List.Delete(9);
-// 	std::cout << "Current Linked List: ";
-// 	List.Display();
-
-// 	std::cout << "Deleting 1: ";
-// 	List.Delete(1);
-// 	List.Display();
-// 
-// 	std::cout << "Deleting 13: ";
-// 	
-// 	List.Insert(3);
-// 
-// 	std::cout << "Searching for 7: ";
-// 	std::cout << List.Search(7) << std::endl;
-// 
-// 	std::cout << "Searching for 13: ";
-// 	std::cout << List.Search(13) << std::endl;
 }
