@@ -2,174 +2,158 @@
 #include <string>
 #include "SinglyLinkedList.h"
 
-typedef std::string Elem;
-
-struct Node
-{ 
-	Node *Next; 
-	Elem Value; 
-};
-
-class SinglyLinkedList
+USinglyLinkedList::USinglyLinkedList()
 {
-public:
-	SinglyLinkedList() 
+	Head = nullptr;
+	Next = nullptr;
+}
+
+USinglyLinkedList::~USinglyLinkedList()
+{
+	FNode* Current = Head;
+	while (Current != 0) 
 	{
-		Head = nullptr;
+		FNode* Next = Current->Next;
+		delete Current;
+		Current = Next;
 	}
+	Head = 0;
+}
 
-	~SinglyLinkedList()
+bool USinglyLinkedList::IsEmpty() const
+{
+	return (Head == nullptr);
+}
+
+size_t USinglyLinkedList::Count() const
+{
+	FNode* Temp = Head;
+	int NumberNode = 0;
+	while (Temp != nullptr)
 	{
-		Node* Current = Head;
-		Node* Next;
+		NumberNode++;
+		Temp = Temp->Next;
+	}
+	return NumberNode;
+}
 
-		while (!IsEmpty()-1)
+USinglyLinkedList::USinglyLinkedList (const USinglyLinkedList &other)
+{
+	Head = nullptr;
+	FNode* OtherCurrent = other.Head;
+	while (OtherCurrent != nullptr)
+	{
+		Insert(OtherCurrent->Value);
+		OtherCurrent = OtherCurrent->Next;
+	} 
+}
+
+USinglyLinkedList & USinglyLinkedList::operator=(const USinglyLinkedList &other)
+{
+	if (&other != this) 
+	{
+		FNode* Temp = Head;
+		while (Temp->Next)
 		{
-			Next = Current->Next;
-			delete Current;
-			Current = Next;
+			Head = Head->Next;
+			delete Temp;
+			Temp = Head;
 		}
-	}
-
-	bool IsEmpty() const
-	{
-		return (Head == nullptr);
-	}
-
-	size_t Count() const
-	{
-		Node* Temp = Head;
-		int NumberNode = 0;
-		while (Temp != nullptr)
+		Temp = other.Head;
+		while(Temp)
 		{
-			NumberNode++;
 			Temp = Temp->Next;
 		}
-		return NumberNode;
 	}
+	return *this;
+}
 
-	SinglyLinkedList (const SinglyLinkedList &other)
+const Elem & USinglyLinkedList::Front() const
+{
+	FNode* Current = Head;
+	while (Current->Next != nullptr)
 	{
-		Head = nullptr;
-		Node* OtherCurrent = other.Head;
-		while (OtherCurrent != nullptr)
-		{
-			Insert(OtherCurrent->Value);
-			OtherCurrent = OtherCurrent->Next;
-		} 
+		Current = Current->Next;
 	}
+	return Current->Value;
+}
 
-	SinglyLinkedList &operator=(const SinglyLinkedList &other)
+void USinglyLinkedList::InsertFront(const Elem &e)
+{
+	FNode* Current = Head;
+	while (Current->Next != nullptr)
 	{
-		if (&other != this) 
-		{
-			Node* Temp = Head;
-			while (Temp->Next)
-			{
-				Head = Head->Next;
-				delete Temp;
-				Temp = Head;
-			}
-			Temp = other.Head;
-			while(Temp)
-			{
-				Temp = Temp->Next;
-			}
-		}
-		return *this;
+		Current = Current->Next;
 	}
+	FNode* NewNode = new FNode;
+	NewNode->Value = e;
+	NewNode->Next = nullptr;
+	Current->Next = NewNode;
+}
 
-	const Elem &Front() const
+void USinglyLinkedList::EraseFront()
+{
+	if (Head == nullptr)
 	{
-		Node* Current = Head;
-		while (Current->Next != nullptr)
-		{
-			Current = Current->Next;
-		}
-		return Current->Value;
+		std::cout << "No values!" << std::endl;
+		return;
 	}
-
-	void InsertFront(const Elem &e)
+	if (Head->Next == nullptr)
 	{
-		Node* Current = Head;
-		while (Current->Next != nullptr)
-		{
-			Current = Current->Next;
-		}
-		Node* NewNode = new Node;
-		NewNode->Value = e;
-		NewNode->Next = nullptr;
-		Current->Next = NewNode;
+		delete Head;
+		return;
 	}
-
-	void EraseFront()
+	FNode* Current = Head;
+	while (Current->Next->Next != nullptr)
 	{
-		if (Head == nullptr)
-		{
-			std::cout << "No values!" << std::endl;
-			return;
-		}
-		if (Head->Next == nullptr)
-		{
-			delete Head;
-			return;
-		}
-		Node* Current = Head;
-		while (Current->Next->Next != nullptr)
-		{
-			Current = Current->Next;
-		}
-		delete Current->Next;
-		Current->Next = nullptr;
+		Current = Current->Next;
 	}
+	delete Current->Next;
+	Current->Next = nullptr;
+}
 
-	void Insert(Elem AddValue)
+void USinglyLinkedList::Insert(Elem AddValue)
+{
+	FNode* NewNode = new FNode;
+	NewNode->Value = AddValue;
+	NewNode->Next = nullptr;
+
+	if (Head == nullptr)
 	{
-		Node* NewNode = new Node;
-		NewNode->Value = AddValue;
-		NewNode->Next = nullptr;
-
-		if (Head == nullptr)
-		{
-			Head = NewNode;
-		}
-		else
-		{
-			NewNode->Next = Head;
-			Head = NewNode;
-		}
+		Head = NewNode;
 	}
-
-	void Display()
+	else
 	{
-		Node* Temp = Head;
-		while (Temp != nullptr)
-		{
- 			std::cout << Temp->Value << " ";
- 			Temp = Temp->Next;
-		}
-		std::cout << std::endl;
+		NewNode->Next = Head;
+		Head = NewNode;
 	}
+}
 
- 	friend std::ostream& operator<<(std::ostream& out, SinglyLinkedList &l)
- 	{
-		Node* Current = l.Head;
-		while (Current != nullptr)
-		{
-			out << Current->Value << std::endl;
-			Current = Current->Next;
-		}
-		return out;
+void USinglyLinkedList::Display()
+{
+	FNode* Temp = Head;
+	while (Temp != nullptr)
+	{
+		std::cout << Temp->Value << " ";
+		Temp = Temp->Next;
 	}
+	std::cout << std::endl;
+}
 
-private:
-	Node* Head;
-	Node* Next;
-};
+std::ostream& operator<<(std::ostream& out, USinglyLinkedList& l)
+{
+	FNode* Current = l.Head;
+	while (Current != nullptr)
+	{
+		out << Current->Value << std::endl;
+		Current = Current->Next;
+	}
+	return out;
+}
 
 int main() {
 
-	SinglyLinkedList List;
+	USinglyLinkedList List;
 
 	List.Insert("Monday");
   	List.Insert("Thuesday");
