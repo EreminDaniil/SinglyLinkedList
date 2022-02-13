@@ -18,6 +18,7 @@ USinglyLinkedList::~USinglyLinkedList()
 		Current = Next;
 	}
 	Head = 0;
+	std::cout << "word";
 }
 
 bool USinglyLinkedList::IsEmpty() const
@@ -160,5 +161,7 @@ int main() {
 	List.Insert("Saturday");
 	List.Insert("Friday");
 	List.Insert("Sunday");
+	std::cout << List << std::endl;
+	List.~USinglyLinkedList();
 	std::cout << List << std::endl;
 }
