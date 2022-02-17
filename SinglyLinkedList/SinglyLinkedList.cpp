@@ -141,6 +141,82 @@ void USinglyLinkedList::Display()
 	std::cout << std::endl;
 }
 
+FNode* USinglyLinkedList::GetTail(FNode* Current)
+{
+	while (Current != nullptr && Current->Next != nullptr)
+	{
+		Current = Current->Next;
+	}
+	return Current;
+
+}
+
+FNode* USinglyLinkedList::Partition(FNode* Head, FNode* End, FNode** NewHead, FNode** NewEnd)
+{
+	FNode* Pivot = End;
+	FNode* Prev = nullptr, * Current = Head, * Tail = Pivot;
+	while (Current != Pivot)
+	{
+		if (Current < Pivot)
+		{
+			if (*NewHead == nullptr)
+			{
+				*NewHead = Current;
+			}
+			Prev = Current;
+			Current = Current->Next;
+		}
+		else
+		{
+			if (Prev)
+			{
+				Prev->Next = Current->Next;
+			}
+			FNode* Temp = Current->Next;
+			Current->Next = nullptr;
+			Tail->Next = Current;
+			Tail = Current;
+			Current = Temp;
+		}
+	}
+	if (*NewHead == nullptr)
+	{
+		*NewHead = Pivot;
+	}
+	*NewEnd = Tail;
+	return Pivot;
+}
+
+FNode* USinglyLinkedList::QuickSortRecur(FNode* Head, FNode* End)
+{
+	if (!Head || (Head == End))
+	{
+		return Head;
+	}
+	FNode* NewHead = nullptr, *NewEnd = nullptr;
+	FNode* Pivot = Partition(Head, End, &NewHead, &NewEnd);
+	if (NewHead != Pivot)
+	{
+		struct FNode* Temp = NewHead;
+		while (Temp->Next != Pivot)
+		{
+			Temp = Temp->Next;
+		}
+		Temp->Next = nullptr;
+		NewHead = QuickSortRecur(NewHead, Temp);
+		Temp = GetTail(NewHead);
+		Temp->Next = Pivot;
+	}
+	Pivot->Next = QuickSortRecur(Pivot->Next, NewEnd);
+	return NewHead;
+}
+
+void USinglyLinkedList::QuickSort(FNode** HeadRef)
+{
+	*HeadRef = QuickSortRecur(*HeadRef, GetTail(*HeadRef));
+	return;
+}
+
 std::ostream& operator<<(std::ostream& out, USinglyLinkedList& l)
 {
 	FNode* Current = l.Head;

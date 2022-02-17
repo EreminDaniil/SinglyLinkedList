@@ -23,7 +23,12 @@ public:
 	void EraseFront();
 	void Insert(Elem AddValue);
 	void Display();
+	void quickSort(FNode* Head);
 	friend std::ostream& operator<<(std::ostream& out, USinglyLinkedList& l);
+	FNode* GetTail(FNode* Current);
+	FNode* Partition(FNode* Head, FNode* End, FNode** NewHead, FNode** NewEnd);
+	FNode* QuickSortRecur(FNode* Head, FNode* End);
+	void QuickSort(FNode** HeadRef);
 private:
 	FNode* Head;
 	FNode* Next;
