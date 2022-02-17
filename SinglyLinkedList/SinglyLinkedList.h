@@ -7,6 +7,7 @@ struct FNode
 {
 	FNode *Next;
 	Elem Value;
+	Elem Data;
 };
 
 class USinglyLinkedList
@@ -29,6 +30,8 @@ public:
 	FNode* Partition(FNode* Head, FNode* End, FNode** NewHead, FNode** NewEnd);
 	FNode* QuickSortRecur(FNode* Head, FNode* End);
 	void QuickSort(FNode** HeadRef);
+	FNode* Middle(FNode* Start, FNode* Last);
+	FNode* BinarySearch(FNode* Head, Elem Value);
 private:
 	FNode* Head;
 	FNode* Next;

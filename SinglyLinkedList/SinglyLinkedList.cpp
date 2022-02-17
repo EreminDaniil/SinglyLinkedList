@@ -217,6 +217,59 @@ void USinglyLinkedList::QuickSort(FNode** HeadRef)
 	return;
 }
 
+
+FNode* USinglyLinkedList::Middle(FNode* Start, FNode* Last)
+{
+	if (Start == nullptr)
+	{
+		return nullptr;
+	}
+	FNode* Slow = Start;
+	FNode* Fast = Start->Next;
+
+	while (Fast != Last)
+	{
+		Fast = Fast->Next;
+		if (Fast != Last)
+		{
+			Slow = Slow->Next;
+			Fast = Fast->Next;
+		}
+	}
+	return Slow;
+}
+
+FNode* USinglyLinkedList::BinarySearch(FNode* Head, Elem Value)
+{
+	FNode* Start = Head;
+	FNode* Last = nullptr;
+	do
+	{
+		FNode* Mid = Middle(Start, Last);
+		if (Mid == nullptr)
+		{
+			return nullptr;
+		}
+		if (Mid->Data == Value)
+		{
+			return Mid;
+		}
+		else if (Mid->Data < Value)
+		{
+			Start = Mid->Next;
+		}
+		else
+		{
+			Last = Mid;
+		}
+
+	} 
+	while (Last == nullptr || Last != Start);
+
+	return nullptr;
+	
+}
+
 std::ostream& operator<<(std::ostream& out, USinglyLinkedList& l)
 {
 	FNode* Current = l.Head;
@@ -227,6 +280,7 @@ std::ostream& operator<<(std::ostream& out, USinglyLinkedList& l)
 	}
 	return out;
 }
+
 
 int main() {
 
